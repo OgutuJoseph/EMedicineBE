@@ -9,5 +9,7 @@ namespace EMedicineBE.Models
 
 		public List<Users> listUsers { get; set; }
 		public Users user { get; set; }
+		public List<Medicines> listMedicines { get; set; }
+		public Medicines medicine { get; set; }
 	}
 }
