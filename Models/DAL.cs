@@ -77,15 +77,26 @@ namespace EMedicineBE.Models
 			DataTable dt = new DataTable();
 			da.Fill(dt);
 			Response response = new Response();
+			Users user = new Users();
 			if(dt.Rows.Count > 0)
 			{
+				user.ID = Convert.ToInt32(dt.Rows[0]["ID"]);
+				user.FirstName = Convert.ToString(dt.Rows[0]["FirstName"]);
+				user.LastName = Convert.ToString(dt.Rows[0]["LastName"]);
+				user.Email = Convert.ToString(dt.Rows[0]["Email"]);
+				user.Type = Convert.ToString(dt.Rows[0]["Type"]);
+				user.Fund = Convert.ToDecimal(dt.Rows[0]["Fund"]);
+				user.CreatedOn = Convert.ToDateTime(dt.Rows[0]["CreatedOn"]);
+				user.Password = Convert.ToString(dt.Rows[0]["Password"]);
 				response.StatusCode = 200;
 				response.StatusMessage = "User exists.";
+				response.user = user;
 			}
 			else
 			{
 				response.StatusCode = 100;
 				response.StatusMessage = "User does not exist.";
+				response.user = null;
 			}
 			return response;
 		}
