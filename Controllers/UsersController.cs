@@ -18,6 +18,7 @@ namespace EMedicineBE.Controllers
             _configuration = configuration;
         }
 
+		// User Registration Controller
 		[HttpPost]
 		[Route("registration")]
 		public Response register(Users users)
@@ -30,6 +31,7 @@ namespace EMedicineBE.Controllers
 			return response;
 		}
 
+		// User Login Controller
 		[HttpPost]
 		[Route("login")]
 		public Response login(Users users)
