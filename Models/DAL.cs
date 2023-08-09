@@ -127,5 +127,33 @@ namespace EMedicineBE.Models
 
             return response;
 		}
+
+		// User - Add to Cart DAL
+		public Response addToCart(Cart cart, SqlConnection connection)
+		{
+			Response response = new Response();
+			SqlCommand cmd = new SqlCommand("sp_AddToCart", connection);
+			cmd.CommandType = CommandType.StoredProcedure;
+			cmd.Parameters.AddWithValue("@UserId", cart.UserId);
+			cmd.Parameters.AddWithValue("@MedicineId", cart.MedicineId);
+			cmd.Parameters.AddWithValue("@UnitPrice", cart.UnitPrice);
+			cmd.Parameters.AddWithValue("@Discount", cart.Discount);
+			cmd.Parameters.AddWithValue("@Quantity", cart.Quantity);
+			cmd.Parameters.AddWithValue("@TotalPrice", cart.TotalPrice); 
+			connection.Open();
+			int i = cmd.ExecuteNonQuery();
+			connection.Close();
+			if(i > 0 )
+			{
+				response.StatusCode = 200;
+				response.StatusMessage = "Item added successfully.";
+			}
+			else
+			{
+				response.StatusCode = 100;
+				response.StatusMessage = "Failed to add item.";
+			}
+			return response;
+		}
 	}
 }
