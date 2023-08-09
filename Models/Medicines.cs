@@ -13,5 +13,6 @@ namespace EMedicineBE.Models
         public DateTime ExpDate { get; set; }
         public string ImageURL { get; set; }
         public int Status { get; set; }
+        public string Type { get; set; }
     }
 }
