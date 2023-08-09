@@ -28,5 +28,16 @@ namespace EMedicineBE.Controllers
 			Response response = dal.addUpdateMedicine(medicines, connection);
 			return response;	
 		}
+
+		// Get All Users Controller
+		[HttpGet]
+		[Route("userList")]
+		public Response userList()
+		{
+			DAL dal = new DAL();
+			SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("EMedCS").ToString());
+			Response response = dal.userList(connection);
+			return response;
+		}
 	}
 }

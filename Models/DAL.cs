@@ -200,7 +200,7 @@ namespace EMedicineBE.Models
 			return response;
 		}
 
-		// User - View Orders DAL
+		// User (Admin) - View Orders DAL
 		public Response orderList(Users users, SqlConnection connection)
 		{
 			Response response = new Response();
@@ -227,7 +227,7 @@ namespace EMedicineBE.Models
 				if (listOrder.Count > 0)
 				{
 					response.StatusCode = 200;
-					response.StatusMessage = "Order details fecthed successfully.";
+					response.StatusMessage = "Order details fetched successfully.";
 					response.listOrders = listOrder;
 				}
 				else
@@ -263,6 +263,7 @@ namespace EMedicineBE.Models
 			cmd.Parameters.AddWithValue("@ExpDate", medicines.ExpDate);
 			cmd.Parameters.AddWithValue("@ImageURL", medicines.ImageURL);
 			cmd.Parameters.AddWithValue("@Status", medicines.Status);
+			cmd.Parameters.AddWithValue("@Type", medicines.Type);
 
 			connection.Open();
 			int i = cmd.ExecuteNonQuery();
@@ -277,6 +278,55 @@ namespace EMedicineBE.Models
 			{
 				response.StatusCode = 100;
 				response.StatusMessage = "Failed to add medicine";
+			}
+
+			return response;
+		}
+
+		// Admin - View All Users Info DAL
+		public Response userList(SqlConnection connection)
+		{
+			Response response = new Response();
+			List<Users> listUsers = new List<Users>();
+			SqlDataAdapter da = new SqlDataAdapter("sp_UserList", connection);
+
+			da.SelectCommand.CommandType = CommandType.StoredProcedure;
+			DataTable dt = new DataTable();
+			da.Fill(dt);
+
+			if (dt.Rows.Count > 0)
+			{
+				for (int i = 0; i < dt.Rows.Count; i++)
+				{
+					Users user = new Users();
+					user.ID = Convert.ToInt32(dt.Rows[i]["ID"]);
+					user.FirstName = Convert.ToString(dt.Rows[i]["FirstName"]);
+					user.LastName = Convert.ToString(dt.Rows[i]["LastName"]);
+					user.Password = Convert.ToString(dt.Rows[i]["Password"]);
+					user.Email = Convert.ToString(dt.Rows[i]["Email"]);
+					user.Fund = Convert.ToDecimal(dt.Rows[i]["Fund"]);
+					user.Status = Convert.ToInt32(dt.Rows[i]["Status"]);
+					user.CreatedOn = Convert.ToDateTime(dt.Rows[i]["CreatedOn"]);
+					listUsers.Add(user);
+				}
+				if (listUsers.Count > 0)
+				{
+					response.StatusCode = 200;
+					response.StatusMessage = "Users fetched successfully.";
+					response.listUsers = listUsers;
+				}
+				else
+				{
+					response.StatusCode = 100;
+					response.StatusMessage = "Failed to fetch Users.";
+					response.listUsers = null;
+				}
+			}
+			else
+			{
+				response.StatusCode = 100;
+				response.StatusMessage = "Users not avaialble.";
+				response.listOrders = null;
 			}
 
 			return response;
