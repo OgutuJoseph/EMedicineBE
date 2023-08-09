@@ -39,5 +39,16 @@ namespace EMedicineBE.Controllers
 			Response response = dal.placeOrder(users, connection);
 			return response;
 		}
+
+		// Get Orders List Controller
+		[HttpPost]
+		[Route("orderList")]
+		public Response orderList(Users users)
+		{
+			DAL dal = new DAL();
+			SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("EMedCS").ToString());
+			Response response = dal.orderList(users, connection);
+			return response;
+		}
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using System.Data.SqlClient;
 using System.Data;
 using System;
+using System.Collections.Generic;
 
 namespace EMedicineBE.Models
 {
@@ -175,6 +176,51 @@ namespace EMedicineBE.Models
 			{
 				response.StatusCode = 100;
 				response.StatusMessage = "Failed to place order.";
+			}
+
+			return response;
+		}
+
+		// User - View Orders DAL
+		public Response orderList(Users users, SqlConnection connection)
+		{
+			Response response = new Response();
+			List<Orders> listOrder = new List<Orders>();
+			SqlDataAdapter da = new SqlDataAdapter("sp_OrderList", connection);
+			da.SelectCommand.CommandType = CommandType.StoredProcedure;
+			da.SelectCommand.Parameters.AddWithValue("@Type", users.Type);
+			da.SelectCommand.Parameters.AddWithValue("@ID", users.ID);
+			DataTable dt = new DataTable();
+			da.Fill(dt);
+			if (dt.Rows.Count > 0)
+			{
+				for (int i = 0; i < dt.Rows.Count; i++)
+				{
+					Orders order = new Orders();
+					order.ID = Convert.ToInt32(dt.Rows[i]["ID"]);
+					order.OrderNo = Convert.ToString(dt.Rows[i]["OrderNo"]);
+					order.OrderTotal = Convert.ToDecimal(dt.Rows[i]["OrderTotal"]);
+					order.OrderStatus = Convert.ToString(dt.Rows[i]["OrderStatus"]);
+					listOrder.Add(order);
+				}
+				if (listOrder.Count > 0)
+				{
+					response.StatusCode = 200;
+					response.StatusMessage = "Order details fecthed successfully.";
+					response.listOrders = listOrder;
+				}
+				else
+				{
+					response.StatusCode = 100;
+					response.StatusMessage = "Failed to fetch Order details.";
+					response.listOrders = null;
+				}
+			}
+			else
+			{
+				response.StatusCode = 100;
+				response.StatusMessage = "Order details not avaialble.";
+				response.listOrders = null;
 			}
 
 			return response;
