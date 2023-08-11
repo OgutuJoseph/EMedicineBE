@@ -1,0 +1,23 @@
+October 17 2022
+URL : https://www.youtube.com/watch?v=O3y-I_6OAW8 -- Ecommerce Application Using ASP.NET Core API With React JS And SQL Server
+01.48.21
+
+Web API
+• User Activities
+- New user registration
+- User login
+- View/edit profile
+- Cart management
+- Place order from cart
+- View orders
+- User signout
+
+• Admin Activities
+- Admin login
+- Add/update medicines
+- Generate reports
+- View customer details and manage fund
+- Admin signout
+
+• Installed Packages
+- System.Data.SqlClient
